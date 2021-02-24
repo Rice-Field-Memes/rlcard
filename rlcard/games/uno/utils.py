@@ -96,6 +96,8 @@ def encode_hand(plane, hand):
     # plane = np.zeros((3, 4, 15), dtype=int)
     plane[0] = np.ones((4, 15), dtype=int)
     hand = hand2dict(hand)
+    #print("EEEEEEEEE")
+    #print(hand)
     for card, count in hand.items():
         card_info = card.split('-')
         color = COLOR_MAP[card_info[0]]

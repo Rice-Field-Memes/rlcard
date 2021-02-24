@@ -28,6 +28,10 @@ register(
     entry_point='rlcard.models.pretrained_models:LeducHoldemCFRModel')
 
 register(
+    model_id = 'uno-dqn',
+    entry_point='rlcard.models.uno_dqn:UnoDQNModel')
+
+register(
     model_id = 'leduc-holdem-rule-v1',
     entry_point='rlcard.models.leducholdem_rule_models:LeducHoldemRuleModelV1')
 

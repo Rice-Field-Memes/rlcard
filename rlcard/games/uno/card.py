@@ -1,3 +1,5 @@
+from colorama import init
+init(autoreset = True)
 from termcolor import colored
 
 class UnoCard(object):

@@ -5,6 +5,7 @@ import os
 
 import rlcard
 from rlcard.agents import CFRAgent
+from rlcard.agents import DQNAgent
 from rlcard.models.model import Model
 
 # Root path of pretrianed models
@@ -24,7 +25,7 @@ class LeducHoldemNFSPModel(Model):
 
         env = rlcard.make('leduc-holdem')
         with self.graph.as_default():
-            self.nfsp_agents = []
+            self.dqn_agents = []
             for i in range(env.player_num):
                 agent = NFSPAgent(self.sess,
                                   scope='nfsp' + str(i),
@@ -32,7 +33,7 @@ class LeducHoldemNFSPModel(Model):
                                   state_shape=env.state_shape,
                                   hidden_layers_sizes=[128,128],
                                   q_mlp_layers=[128,128])
-                self.nfsp_agents.append(agent)
+                self.dqn_agents.append(agent)
 
         check_point_path = os.path.join(ROOT_PATH, 'leduc_holdem_nfsp')
         with self.sess.as_default():
@@ -49,7 +50,7 @@ class LeducHoldemNFSPModel(Model):
         Note: Each agent should be just like RL agent with step and eval_step
               functioning well.
         '''
-        return self.nfsp_agents
+        return self.dqn_agents
 
 class LeducHoldemNFSPPytorchModel(Model):
     ''' A pretrained PyTorch model on Leduc Holdem with NFSP
@@ -61,7 +62,7 @@ class LeducHoldemNFSPPytorchModel(Model):
         import torch
         from rlcard.agents import NFSPAgentPytorch
         env = rlcard.make('leduc-holdem')
-        self.nfsp_agents = []
+        self.dqn_agents = []
         for i in range(env.player_num):
             agent = NFSPAgentPytorch(scope='nfsp' + str(i),
                                      action_num=env.action_num,
@@ -69,11 +70,11 @@ class LeducHoldemNFSPPytorchModel(Model):
                                      hidden_layers_sizes=[128,128],
                                      q_mlp_layers=[128,128],
                                      device=torch.device('cpu'))
-            self.nfsp_agents.append(agent)
+            self.dqn_agents.append(agent)
 
         check_point_path = os.path.join(ROOT_PATH, 'leduc_holdem_nfsp_pytorch/model.pth')
         checkpoint = torch.load(check_point_path)
-        for agent in self.nfsp_agents:
+        for agent in self.dqn_agents:
             agent.load(checkpoint)
 
     @property
@@ -86,7 +87,7 @@ class LeducHoldemNFSPPytorchModel(Model):
         Note: Each agent should be just like RL agent with step and eval_step
               functioning well.
         '''
-        return self.nfsp_agents
+        return self.dqn_agents
 
 class LeducHoldemCFRModel(Model):
     ''' A pretrained model on Leduc Holdem with CFR (chance sampling)
